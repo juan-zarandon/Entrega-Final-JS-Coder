@@ -1,134 +1,148 @@
-function Juego(nombre, precio) {
-  this.nombre = nombre;
-  this.precio = precio;
-}
+// elementos traidos del DOM
+const listaDeJuegosDiv = document.getElementById("lista-de-juegos");
+const carritoDeComprasDiv = document.getElementById("carrito-de-compras");
+const resumenCompraDiv = document.getElementById("resumen-compra");
+const iniciarBtn = document.getElementById("iniciarBtn");
 
-const juegosDisponibles = [
-  new Juego("FIFA 23", 60),
-  new Juego("God of War", 70),
-  new Juego("Minecraft", 30),
-  new Juego("Call of Duty", 65),
-  new Juego("Mario Kart", 50),
-];
-
+// declaracion de variable dejuegos  disponibles
+let juegosDisponibles = [];
+// uso de WebStorage API para guardar el carrito
 let carritoCompras = cargarCarritoDesdeLocalStorage();
-function iniciarSimulador() {
-  const nombreUsuario = prompt(
-    "Bienvenido a la tienda de videojuegos. ¿Cuál es tu nombre?"
-  );
-  if (nombreUsuario === null || nombreUsuario === "") {
-    alert("Necesitas ingresar un nombre para continuar.");
-    return;
-  }
-  alert(
-    "¡Hola " +
-      nombreUsuario +
-      "! Vamos a ayudarte con tu compra de videojuegos."
-  );
-  const quiereVerJuegos = confirm(
-    "¿Deseas ver la lista de juegos disponibles?"
-  );
-  if (quiereVerJuegos) {
-    mostrarJuegosDisponibles();
-  }
-  procesarCompra(nombreUsuario);
+
+// Asincronismo: uso de fetch API, Promesas (then y catch) y JSON
+function cargarJuegos() {
+  fetch("data.json")
+    .then((response) => response.json())
+    .then((data) => {
+      juegosDisponibles = data;
+      mostrarJuegosDisponibles();
+    })
+    .catch((error) => {
+      console.error("Error al cargar los juegos:", error);
+      listaDeJuegosDiv.innerHTML =
+        '<p class="error">No se pudieron cargar los juegos.</p>';
+    });
 }
 
+// Nueva funcion para tomar los datos de los juegos y mostrarlos de forma interactiva
 function mostrarJuegosDisponibles() {
-  let listaJuegos = "Juegos disponibles:\n\n";
-  for (let i = 0; i < juegosDisponibles.length; i++) {
-    listaJuegos +=
-      i +
-      1 +
-      ". " +
-      juegosDisponibles[i].nombre +
-      " - $" +
-      juegosDisponibles[i].precio +
-      "\n";
-  }
-  alert(listaJuegos);
-}
-
-function procesarCompra(nombreUsuario) {
-  let seguirComprando = true;
-  while (seguirComprando) {
-    let listaJuegos = "Selecciona un juego (ingresa el número):\n\n";
-    for (let i = 0; i < juegosDisponibles.length; i++) {
-      listaJuegos +=
-        i +
-        1 +
-        ". " +
-        juegosDisponibles[i].nombre +
-        " - $" +
-        juegosDisponibles[i].precio +
-        "\n";
-    }
-    const seleccion = prompt(listaJuegos);
-    const numeroSeleccion = parseInt(seleccion);
-    if (numeroSeleccion >= 1 && numeroSeleccion <= juegosDisponibles.length) {
-      const juegoSeleccionado = juegosDisponibles[numeroSeleccion - 1];
-      carritoCompras.push(juegoSeleccionado);
-      guardarCarritoEnLocalStorage();
-      alert("¡Agregaste " + juegoSeleccionado.nombre + " a tu carrito!");
-    } else {
-      alert("Selección no válida. Por favor intenta de nuevo.");
-    }
-    seguirComprando = confirm("¿Deseas agregar otro juego al carrito?");
-  }
-  calcularTotal(nombreUsuario);
-}
-
-function calcularTotal(nombreUsuario) {
-  if (carritoCompras.length === 0) {
-    alert("No has agregado ningún juego al carrito.");
+  listaDeJuegosDiv.innerHTML = "";
+  if (juegosDisponibles.length === 0) {
+    listaDeJuegosDiv.innerHTML =
+      "<p>No hay juegos disponibles en este momento.</p>";
     return;
   }
-  let subtotal = 0;
-  let resumenCompra = "Resumen de tu compra:\n\n";
-  for (let i = 0; i < carritoCompras.length; i++) {
-    subtotal += carritoCompras[i].precio;
-    resumenCompra +=
-      "- " +
-      carritoCompras[i].nombre +
-      " - $" +
-      carritoCompras[i].precio +
-      "\n";
+  const listaJuegosUL = document.createElement("ul");
+  listaJuegosUL.classList.add("lista-juegos");
+  juegosDisponibles.forEach((juego) => {
+    const juegoLI = document.createElement("li");
+    juegoLI.classList.add("juego-item");
+    juegoLI.innerHTML = `
+      <span>${juego.nombre} - $${juego.precio}</span>
+      <button class="agregar-carrito" data-id="${juego.id}">Agregar al carrito</button>
+    `;
+    listaJuegosUL.appendChild(juegoLI);
+  });
+  listaDeJuegosDiv.appendChild(listaJuegosUL);
+  const botonesAgregar = document.querySelectorAll(".agregar-carrito");
+  botonesAgregar.forEach((boton) => {
+    boton.addEventListener("click", agregarJuegoAlCarrito);
+  });
+}
+
+// Funcion para obtener ID del juego y agregra al carrito
+function agregarJuegoAlCarrito(event) {
+  const juegoId = parseInt(event.target.dataset.id);
+  const juegoSeleccionado = juegosDisponibles.find(
+    (juego) => juego.id === juegoId
+  );
+
+  if (juegoSeleccionado) {
+    carritoCompras.push(juegoSeleccionado);
+    guardarCarritoEnLocalStorage();
+    mostrarCarrito();
+    mostrarResumen();
   }
+}
+
+// funcion para mostrar los items del carrito o el mensaje de carrito vacío
+function mostrarCarrito() {
+  carritoDeComprasDiv.innerHTML = "";
+  if (carritoCompras.length === 0) {
+    carritoDeComprasDiv.innerHTML =
+      '<p id="carrito-vacio">Tu carrito está vacío.</p>';
+    return;
+  }
+
+  const listaCarritoUL = document.createElement("ul");
+  listaCarritoUL.classList.add("lista-carrito");
+
+  carritoCompras.forEach((item) => {
+    const itemLI = document.createElement("li");
+    itemLI.classList.add("carrito-item");
+    itemLI.innerHTML = `
+      <span>${item.nombre} - $${item.precio}</span>
+    `;
+    listaCarritoUL.appendChild(itemLI);
+  });
+
+  carritoDeComprasDiv.appendChild(listaCarritoUL);
+}
+
+// funcion para calcular el subtotal, aplicar descuento y total a pagar
+function calcularTotal() {
+  let subtotal = 0;
+  carritoCompras.forEach((juego) => {
+    subtotal += juego.precio;
+  });
+
   let descuento = 0;
   if (carritoCompras.length >= 3) {
     descuento = 0.2;
   } else if (carritoCompras.length === 2) {
     descuento = 0.1;
   }
-
+  // Calculo del descuento y el total a pagar
   const montoDescuento = subtotal * descuento;
   const total = subtotal - montoDescuento;
 
-  resumenCompra += "\nSubtotal: $" + subtotal.toFixed(2);
-  resumenCompra += "\nCantidad de juegos: " + carritoCompras.length;
-  if (descuento > 0) {
-    resumenCompra += "\nDescuento aplicado: " + descuento * 100 + "%";
-    resumenCompra += "\nMonto de descuento: $" + montoDescuento.toFixed(2);
-  } else {
-    resumenCompra += "\nNo se aplicaron descuentos.";
-  }
-  resumenCompra += "\nTotal a pagar: $" + total.toFixed(2);
-  alert(resumenCompra);
-  console.log("===== RESUMEN DE COMPRA =====");
-  console.log("Cliente: " + nombreUsuario);
-  console.log(resumenCompra);
-  const mensaje =
-    "¡Gracias por tu compra, " + nombreUsuario + "! Vuelve pronto.";
-  const mensajeConfirmacionElement = document.getElementById(
-    "mensaje-confirmacion"
-  );
-  mensajeConfirmacionElement.textContent = mensaje;
+  return {
+    subtotal: subtotal,
+    descuento: descuento,
+    montoDescuento: montoDescuento,
+    total: total,
+  };
 }
 
+// funcion para mostrar el resumen de la compra
+function mostrarResumen() {
+  resumenCompraDiv.innerHTML = "";
+
+  if (carritoCompras.length > 0) {
+    const resumen = calcularTotal();
+    const resumenHTML = `
+      <h3>Resumen de tu compra</h3>
+      <p>Subtotal: $${resumen.subtotal.toFixed(2)}</p>
+      <p>Cantidad de juegos: ${carritoCompras.length}</p>
+      ${
+        resumen.descuento > 0
+          ? `<p>Descuento aplicado: ${
+              resumen.descuento * 100
+            }% (-$${resumen.montoDescuento.toFixed(2)})</p>`
+          : "<p>No se aplicaron descuentos.</p>"
+      }
+      <h3>Total a pagar: $${resumen.total.toFixed(2)}</h3>
+    `;
+    resumenCompraDiv.innerHTML = resumenHTML;
+  }
+}
+
+// funcion para guardar el carrito en localStorage
 function guardarCarritoEnLocalStorage() {
   localStorage.setItem("carrito", JSON.stringify(carritoCompras));
 }
 
+// funcion para cargar el carrito desde localStorage
 function cargarCarritoDesdeLocalStorage() {
   const carritoGuardado = localStorage.getItem("carrito");
   if (carritoGuardado) {
@@ -138,8 +152,12 @@ function cargarCarritoDesdeLocalStorage() {
   }
 }
 
-document
-  .getElementById("iniciarBtn")
-  .addEventListener("click", iniciarSimulador);
+// Inicialización: cargar juegos y mostrar el carrito al cargar la página
+cargarJuegos();
+mostrarCarrito();
+mostrarResumen();
 
-console.log("Simulador de Tienda de Videojuegos cargado correctamente.");
+// Ocultamos el botón de "Iniciar Simulación" ya que ahora la interacción es directa
+if (iniciarBtn) {
+  iniciarBtn.style.display = "none";
+}

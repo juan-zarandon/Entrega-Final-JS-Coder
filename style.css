@@ -6,70 +6,128 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
-  margin: 0;
-  padding: 20px;
+  background-color: #f4f4f4;
+  margin: 20px;
   text-align: center;
-}
-
-/* Estilos para el mensaje de confirmación */
-
-#mensaje-confirmacion {
-  font-size: 24px;
-  color: #1976d2;
-  background-color: #f0f0f0;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-family: sans-serif;
-  text-align: center;
-  margin: 20px auto;
-  max-width: 400px;
-}
-
-h1 {
-  color: #0066cc;
-  text-shadow: 1px 1px 2px #cccccc;
-}
-
-p {
-  color: #333333;
-  width: 80%;
-  margin: 20px auto;
-  line-height: 1.5;
-}
-
-button {
-  background-color: #ff6600;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-top: 20px;
-}
-
-button:hover {
-  background-color: #ff9933;
 }
 
 .contenedor {
   background-color: white;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 80%;
-  max-width: 600px;
-  margin: 0 auto;
+  width: 90%;
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+p {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 15px;
 }
 
 .titulo-juegos {
-  color: #009900;
+  color: #007bff;
   margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+#lista-de-juegos {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.lista-juegos {
+  list-style: none;
+  padding: 0;
+}
+
+.juego-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.juego-item:last-child {
+  border-bottom: none;
+}
+
+.juego-item span {
+  flex-grow: 1;
+}
+
+.agregar-carrito {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.agregar-carrito:hover {
+  background-color: #1e7e34;
+}
+
+#carrito-de-compras {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.lista-carrito {
+  list-style: none;
+  padding: 0;
+}
+
+.carrito-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.carrito-item:last-child {
+  border-bottom: none;
+}
+
+#carrito-vacio {
+  font-style: italic;
+  color: #777;
+}
+
+#resumen-compra {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  text-align: left;
+}
+
+#resumen-compra h3 {
+  color: #333;
+  margin-top: 0;
+}
+
+#resumen-compra p {
+  margin-bottom: 5px;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
 }
 
 .footer {
-  margin-top: 50px;
+  margin-top: 30px;
   font-size: 14px;
-  color: #666666;
+  color: #666;
 }
