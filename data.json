@@ -1,0 +1,8 @@
+[
+    { "id": 1, "nombre": "Marvel's Spider-Man: Miles Morales", "precio": 45000 },
+    { "id": 2, "nombre": "Horizon Forbidden West", "precio": 50000 },
+    { "id": 3, "nombre": "God of War Ragnarök", "precio": 55000 },
+    { "id": 4, "nombre": "Elden Ring", "precio": 60000 },
+    { "id": 5, "nombre": "Gran Turismo 7", "precio": 52000 },
+    { "id": 6, "nombre": "The Last of Us Part I", "precio": 58000 }
+  ]

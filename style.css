@@ -1,0 +1,75 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Estilos para el mensaje de confirmación */
+
+#mensaje-confirmacion {
+  font-size: 24px;
+  color: #1976d2;
+  background-color: #f0f0f0;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-family: sans-serif;
+  text-align: center;
+  margin: 20px auto;
+  max-width: 400px;
+}
+
+h1 {
+  color: #0066cc;
+  text-shadow: 1px 1px 2px #cccccc;
+}
+
+p {
+  color: #333333;
+  width: 80%;
+  margin: 20px auto;
+  line-height: 1.5;
+}
+
+button {
+  background-color: #ff6600;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #ff9933;
+}
+
+.contenedor {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.titulo-juegos {
+  color: #009900;
+  margin-top: 30px;
+}
+
+.footer {
+  margin-top: 50px;
+  font-size: 14px;
+  color: #666666;
+}
