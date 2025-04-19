@@ -10,14 +10,14 @@ body {
   margin: 20px;
   text-align: center;
 }
-
+/* Se aumentó el ancho del contenedor para ocupar más de la pantalla */
 .contenedor {
   background-color: white;
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 90%;
-  max-width: 800px;
+  width: 95%;
+  max-width: 1200px;
   margin: 20px auto;
 }
 
@@ -130,4 +130,23 @@ p {
   margin-top: 30px;
   font-size: 14px;
   color: #666;
+}
+
+/* css para el boton de finalizar compra con estilo similar a los del carrito pero azul como el titulo dela pagina */
+#boton-finalizar-compra {
+  background-color: #1976d2;
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.2em;
+  text-align: center;
+  display: block;
+  margin: 20px auto;
+  text-decoration: none;
+}
+
+#boton-finalizar-compra:hover {
+  background-color: #1565c0;
 }

@@ -3,6 +3,7 @@ const listaDeJuegosDiv = document.getElementById("lista-de-juegos");
 const carritoDeComprasDiv = document.getElementById("carrito-de-compras");
 const resumenCompraDiv = document.getElementById("resumen-compra");
 const iniciarBtn = document.getElementById("iniciarBtn");
+const carritoVacioMensaje = document.getElementById("carrito-vacio"); // Referencia al mensaje de carrito vacío
 
 // declaracion de variable dejuegos  disponibles
 let juegosDisponibles = [];
@@ -152,12 +153,50 @@ function cargarCarritoDesdeLocalStorage() {
   }
 }
 
+// Funcion para borrar el carrito
+function borrarCarrito() {
+  carritoCompras = [];
+  localStorage.removeItem("carrito");
+  mostrarCarrito();
+  mostrarResumen();
+}
+
 // Inicialización: cargar juegos y mostrar el carrito al cargar la página
 cargarJuegos();
 mostrarCarrito();
 mostrarResumen();
 
-// Ocultamos el botón de "Iniciar Simulación" ya que ahora la interacción es directa
 if (iniciarBtn) {
   iniciarBtn.style.display = "none";
 }
+
+//boton de finalizacion de compra con Sweet Alert (librerias)
+document.addEventListener("DOMContentLoaded", function () {
+  const finalizarCompraBtn = document.getElementById("boton-finalizar-compra");
+
+  if (finalizarCompraBtn) {
+    finalizarCompraBtn.addEventListener("click", () => {
+      Swal.fire({
+        title: "¡Compra Finalizada!",
+        text: "¿Deseas completar tu compra?",
+        icon: "success",
+        showCancelButton: true,
+        confirmButtonText: "Sí, finalizar compra",
+        cancelButtonText: "Cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          borrarCarrito();
+          Swal.fire(
+            "¡Compra exitosa!",
+            "Tu compra se ha completado.",
+            "success"
+          );
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire("Cancelado", "Tu compra ha sido cancelada.", "info");
+        }
+      });
+    });
+  } else {
+    console.error("No se encontró el botón con el ID 'boton-finalizar-compra'");
+  }
+});
